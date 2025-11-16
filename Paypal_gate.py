@@ -1,4 +1,3 @@
-
 from flask import Flask, request, jsonify
 import requests
 import html
@@ -54,7 +53,7 @@ class AssassinDonationAPI:
             response = self.session.get('https://soule-foundation.org/', params=params, headers=headers)
             html_text = response.text
 
-            # Extract form IDs
+            # Extract form IDs using regex only - no BeautifulSoup needed
             id_match = re.search(r'"donationFormId":\s*(\d+)', html_text)
             form_id = id_match.group(1) if id_match else "264641"
 
@@ -280,7 +279,7 @@ def process_card_via_url(card_details):
         card_data = {
             'number': card_number,
             'cvv': cvv,
-            'expiry': f"20{exp_year}-{exp_month}"  # Format: 2028-01
+            'expiry': f"20{exp_year}-{exp_month}"
         }
         
         # Default personal info
@@ -418,8 +417,8 @@ def assassin_info():
             "post_api": "POST /Assassin/donate"
         },
         "example_urls": [
-            "http://yourserver:5000/cc=5523389018553010|01|28|417",
-            "http://yourserver:5000/cc=5523389018553010|01|28|417/amount/5"
+            "/cc=5523389018553010|01|28|417",
+            "/cc=5523389018553010|01|28|417/amount/5"
         ]
     })
 
